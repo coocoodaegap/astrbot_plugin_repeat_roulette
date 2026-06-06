@@ -34,7 +34,7 @@ class RepeatRoulettePlugin(Star):
             session["repeat_users"].append(sender_id)
         else:
             if len(session["repeat_users"]) > 0:
-                n = self.config.get("n", 1)
+                n = self.config.get("last_n_th", 1)
                 duration = self.config.get("ban_duration", 60)
 
                 if len(session["repeat_users"]) >= n:
