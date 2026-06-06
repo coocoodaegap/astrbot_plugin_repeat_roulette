@@ -1,0 +1,7 @@
+name: astrbot_plugin_repeat_roulette
+display_name: 复读轮盘赌
+desc: 复读被打断时将倒数第 N 个复读者禁言。
+version: v1.0.0
+author: coocoodaegap
+repo: https://github.com/coocoodaegap/astrbot_plugin_repeat_roulette
+astrbot_version: ">=4.4.0"

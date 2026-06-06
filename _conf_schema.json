@@ -1,0 +1,14 @@
+{
+    "n": {
+        "type": "int",
+        "title": "禁言倒数第 N 个复读者",
+        "default": 1,
+        "description": "当复读被打断时，禁言倒数第 N 个参与复读的用户。"
+    },
+    "ban_duration": {
+        "type": "int",
+        "title": "禁言时长 (秒)",
+        "default": 60,
+        "description": "禁言持续的时间，单位为秒。"
+    }
+}
