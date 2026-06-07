@@ -1,10 +1,15 @@
 from astrbot.api.star import Context, Star, register
 from astrbot.api.event.filter import event_message_type, EventMessageType
+from astrbot.api.event import MessageChain
+from astrbot.api.message_components import At, Plain
 from astrbot.core.platform.sources.aiocqhttp.aiocqhttp_message_event import (
     AiocqhttpMessageEvent,
 )
+import logging
 
-@register("repeat_roulette", "coocoodaegap", "复读轮盘赌", "0.0.1")
+logger = logging.getLogger("astrbot")
+
+@register("repeat_roulette", "coocoodaegap", "复读轮盘赌", "0.0.2")
 class RepeatRoulettePlugin(Star):
     def __init__(self, context: Context, config: dict = None):
         super().__init__(context)
@@ -26,7 +31,6 @@ class RepeatRoulettePlugin(Star):
         session = self.sessions[session_id]
         sender_id = event.get_sender_id()
 
-        # 跳过 Bot 自己
         if event.get_self_id() == sender_id:
             return
 
@@ -39,14 +43,33 @@ class RepeatRoulettePlugin(Star):
 
                 if len(session["repeat_users"]) >= n:
                     target_user = session["repeat_users"][-n]
+                    
+                    ban_success = False
                     try:
+                        # 尝试禁言
                         await event.bot.set_group_ban(
                             group_id=int(group_id),
                             user_id=int(target_user),
                             duration=duration,
                         )
-                    except Exception:
-                        pass
+                        ban_success = True
+                    except Exception as e:
+                        err_msg = str(e).lower()
+                        if "cannot ban" in err_msg:
+                            await event.send(MessageChain([Plain("子弹打歪了...")]))
+                        else:
+                            logger.error(f"轮盘赌禁言失败: {e}")
+
+                    if ban_success:
+                        try:
+                            await event.send(
+                                MessageChain([
+                                    At(qq=target_user),
+                                    Plain(f" 子弹打中你了，喜提 {duration}秒 轮盘惩罚~")
+                                ])
+                            )
+                        except Exception as e:
+                            logger.error(f"轮盘赌发送消息失败: {e}")
 
             session["last_msg"] = msg
             session["repeat_users"] = []
