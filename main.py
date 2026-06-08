@@ -5,6 +5,7 @@ from astrbot.api.message_components import At, Plain
 from astrbot.core.platform.sources.aiocqhttp.aiocqhttp_message_event import (
     AiocqhttpMessageEvent,
 )
+import random
 import logging
 
 logger = logging.getLogger("astrbot")
@@ -14,6 +15,7 @@ class RepeatRoulettePlugin(Star):
     def __init__(self, context: Context, config: dict = None):
         super().__init__(context)
         self.config = config or {}
+        self.random_mode = self.config.get("random_mode", False)
         self.sessions = {}  # group_id -> {"last_msg": str, "repeat_users": list}
 
     @event_message_type(EventMessageType.GROUP_MESSAGE)
@@ -38,11 +40,18 @@ class RepeatRoulettePlugin(Star):
             session["repeat_users"].append(sender_id)
         else:
             if len(session["repeat_users"]) > 0:
-                n = self.config.get("last_n_th", 1)
                 duration = self.config.get("ban_duration", 60)
 
-                if len(session["repeat_users"]) >= n:
-                    target_user = session["repeat_users"][-n]
+                if self.random_mode:
+                    target_user = random.choice(session["repeat_users"])
+                else:
+                    n = self.config.get("last_n_th", 1)
+                    if len(session["repeat_users"]) >= n:
+                        target_user = session["repeat_users"][-n]
+                    else:
+                        target_user = None
+
+                if target_user is not None:
                     
                     ban_success = False
                     try:

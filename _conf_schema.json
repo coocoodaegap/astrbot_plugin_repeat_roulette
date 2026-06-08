@@ -1,4 +1,10 @@
 {
+    "random_mode": {
+        "type": "bool",
+        "title": "随机模式",
+        "default": false,
+        "description": "启用后，惩罚目标从倒数第 N 个变为复读队列中随机抽取一个。"
+    },
     "last_n_th": {
         "type": "int",
         "title": "禁言倒数第 N 个复读者",
