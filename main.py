@@ -10,7 +10,7 @@ import logging
 
 logger = logging.getLogger("astrbot")
 
-@register("repeat_roulette", "coocoodaegap", "复读轮盘赌", "0.0.2")
+@register("repeat_roulette", "coocoodaegap", "复读轮盘赌", "0.0.3")
 class RepeatRoulettePlugin(Star):
     def __init__(self, context: Context, config: dict = None):
         super().__init__(context)
