@@ -1,9 +1,15 @@
 name: astrbot_plugin_repeat_roulette
 display_name: 复读轮盘赌
-desc: 复读被打断时将倒数第 N 个复读者禁言。
-version: v0.0.3
-author: coocoodaegap
+short_desc: 复读越多越危险的群聊轮盘禁言小游戏。
+desc: 复读越多越危险；复读被打断时，随机结算一发会逐步上膛的轮盘赌。
+version: 0.1.0
+author: 咕咕大侠
 repo: https://github.com/coocoodaegap/astrbot_plugin_repeat_roulette
+tags:
+  - 娱乐
+  - 群聊
+  - 复读
+  - 轮盘赌
 astrbot_version: ">=4.25.0"
 support_platforms:
   - aiocqhttp

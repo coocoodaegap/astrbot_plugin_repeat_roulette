@@ -2,19 +2,57 @@
     "random_mode": {
         "type": "bool",
         "title": "随机模式",
-        "default": false,
-        "description": "启用后，惩罚目标从倒数第 N 个变为复读队列中随机抽取一个。"
+        "default": true,
+        "description": "随机抽取复读目标",
+        "hint": "开启后，每次复读都作为一个独立抽签位置；同一用户复读得越多，被抽中的机会越高。关闭后改用“禁言倒数第 N 个复读者”。"
     },
     "last_n_th": {
         "type": "int",
         "title": "禁言倒数第 N 个复读者",
         "default": 1,
-        "description": "当复读被打断时，禁言倒数第 N 个参与复读的用户。"
+        "description": "固定选择倒数第 N 次复读",
+        "hint": "仅在关闭随机模式时生效。1 表示最后一次复读，2 表示倒数第二次；若本轮复读次数不足 N，则本轮不结算惩罚。"
+    },
+    "min_repeat_count": {
+        "type": "int",
+        "title": "最低复读次数",
+        "default": 2,
+        "description": "达到此次数后才结算轮盘",
+        "hint": "同一用户的重复发送会累计计数。低于此值的复读链被打断时会静默结束；最小有效值为 1。"
+    },
+    "base_bullet_chance": {
+        "type": "int",
+        "title": "起始实弹率 (%)",
+        "default": 20,
+        "description": "达到门槛时的实弹率",
+        "hint": "当复读次数刚好达到“最低复读次数”时使用此概率。数值会自动限制在 0% 到 100%。"
+    },
+    "chance_per_repeat": {
+        "type": "int",
+        "title": "每次额外复读的实弹率增幅 (%)",
+        "default": 15,
+        "description": "额外复读带来的实弹率增幅",
+        "hint": "超过最低复读次数后，每多一次复读便增加一次此数值。例如门槛为 2、起始为 20、增幅为 15 时，第 3 次复读后实弹率为 35%。"
+    },
+    "max_bullet_chance": {
+        "type": "int",
+        "title": "实弹率上限 (%)",
+        "default": 80,
+        "description": "实弹率的最高值",
+        "hint": "无论复读多少次，实弹率都不会超过此值。建议保留一定空包概率，才会更有轮盘赌的悬念。"
+    },
+    "round_timeout_seconds": {
+        "type": "int",
+        "title": "复读轮超时 (秒)",
+        "default": 180,
+        "description": "多久未活动后结束当前轮",
+        "hint": "超时后的下一条消息会直接开启新一轮，不会触发上一轮的处罚。最小有效值为 1 秒。"
     },
     "ban_duration": {
         "type": "int",
         "title": "禁言时长 (秒)",
         "default": 60,
-        "description": "禁言持续的时间，单位为秒。"
+        "description": "实弹命中的禁言时长",
+        "hint": "单位为秒。仅在实弹命中、且机器人具备群管理权限时生效；例如 60 表示禁言一分钟。"
     }
 }
